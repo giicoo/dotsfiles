@@ -1,0 +1,213 @@
+(defvar eww "$HOME/.local/eww/eww")
+
+; Module
+(defwidget icon-module [icon ?class ?visible]
+  (box :class "${class} icon-module"
+       :orientation "h"
+       :halign "end"
+       :space-evenly false
+       :visible {visible ?: true}
+    (label :class "icon-module__icon" :text "${icon}")
+    (children)))
+
+; Workspaces widget
+(deflisten workspaces :initial "[]" "bash ~/.config/eww/scripts/get-workspaces")
+(deflisten current_workspace :initial "1" "bash ~/.config/eww/scripts/get-active-workspace")
+(defwidget workspaces []
+  (eventbox :class "workspaces-widget"
+    :onscroll "bash ~/.config/eww/scripts/change-active-workspace {} ${current_workspace}"
+    (box 
+      :spacing 5
+      :halign "start"
+      (for workspace in workspaces
+        (eventbox 
+          :visible {workspace.windows > 0 ? true : false}
+          :onclick "hyprctl dispatch workspace ${workspace.id}"
+            (box :class "workspace-entry ${workspace.id == current_workspace ? "current" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
+              (label :text "${workspace.id}")
+            )
+          )
+        )
+      )
+    )
+  )
+
+ 
+  
+          
+; Clock widget
+(defpoll time_poll :interval "1s" "date +%H:%M")
+(defwidget clock []
+  (eventbox :onclick "./scripts/pop.sh calendar"
+    (box :class "clock" 
+      :orientation "h" 
+      
+      (label :text "${time_poll}"))
+  )
+)
+
+; Volume
+(defpoll vol :interval "5s" "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print substr($2, 3, length($2)-1)}'")
+(defpoll vol-icon
+  :interval "5s"
+  :initial "0.00" 
+  "bash ./scripts/get-volume.sh --icon")
+(defvar vol_reveal false)
+(defwidget volume-widget []
+  (eventbox
+     :onhover "${eww} update vol_reveal=true" 
+     :onhoverlost "${eww} update vol_reveal=false"
+     
+  (box :class "volume"
+    :orientation "h"     
+    :space-evenly false  
+    :halign "end"
+    :spacing 5
+    (label :text "${vol-icon} " :tooltip "${vol}%")
+    (revealer :transition "slideleft"
+        :reveal vol_reveal
+        :duration "250ms"
+    (scale    
+      :class "volbar"  
+        :value vol
+        :orientation "h"
+        :tooltip "${vol}%"
+      
+        :max 100 
+        :min 0
+        :onchange "wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ {}%" )))))
+
+
+; Brightnessctl
+(defpoll br :interval "5s" "brightnessctl -m -d amdgpu_bl2 | awk -F, '{print substr($4, 0, length($4)-1)}' | tr -d '%'")
+(defvar br_reveal false)
+(defwidget bright []
+    (eventbox
+       :onhover "${eww} update br_reveal=true" 
+       :onhoverlost "${eww} update br_reveal=false"
+     
+    (box :class "bright"
+      :orientation "h"     
+      :space-evenly false  
+      :halign "end"
+      :spacing 5
+      (label :text "󰃞 " :class "bright_icon" :tooltip "${br}%")
+      (revealer :transition "slideleft"
+          :reveal br_reveal
+          :duration "250ms"
+      (scale    
+        :class "brightbar"  
+          :value br
+          :orientation "h"
+          :tooltip "${br}%"
+          :max 100
+          :min 0
+          :onchange "brightnessctl set {}%" )))))
+  
+
+; Calendar
+(defpoll calendar_day :interval "20h" "date '+%d'")
+(defpoll calendar_year :interval "20h" "date '+%Y'")
+(defwidget cal []
+	(calendar :class "calendar" 
+			  :day calendar_day 
+			  :year calendar_year))
+
+(defwindow calendar
+  :monitor 0
+	:geometry (
+    geometry 
+    :x "0%" 
+		:y "0%" 
+    :anchor "top right"
+		:width "270px" 
+		:height "60px"
+  )
+  :stacking "fg" 
+  :exclusive "true" 
+(cal))
+
+
+; RAM
+(defwidget ram []
+  (icon-module :class "ram" :icon " " :visible {EWW_RAM.used_mem_perc != ""}
+    (label :text "${round(EWW_RAM.used_mem_perc, 0)}%")))
+
+; CPU
+(defwidget cpu []
+  (icon-module :class "cpu" :icon " " 
+      (label :text "${round(EWW_CPU.avg, 0)}%"))) 
+
+; BATTERY
+(defwidget battery []
+  (icon-module :class "battery" :icon " " 
+      (label :text "${EWW_BATTERY.BAT0.capacity}%"))) 
+
+
+; Notification
+(deflisten notifs :initial ""
+  `python ~/.config/eww/scripts/not.py`)
+
+(defwindow notifications
+           :monitor 0
+           :geometry (geometry :x "20px"
+                               :y "20px"
+                               :anchor "top right")
+           :stacking "overlay"
+           (literal :content notifs))
+
+; Left side modules
+(defwidget module-left []
+  (box 
+    (workspaces)
+  )
+)
+
+; Right side modules
+(defwidget module-right []
+  (box
+    :spacing 20
+    :space-evenly false  
+    :halign "end"
+    (bright)
+    (volume-widget)
+    (battery)
+    (cpu)
+    (ram)
+    (clock)
+
+  )
+)
+
+; Center side modules
+(defwidget module-center []
+  (box 
+  
+  )
+)
+
+(defwidget bar-widget []
+  (box 
+    (module-left)
+    (module-center)
+    (module-right)
+  )
+)
+
+(defwindow bar
+  :class "bar"
+  :monitor 0 
+  :geometry 
+  (
+      geometry 
+      :x "0"
+      :y "0"
+      :width "100%"
+      :height "3%" 
+      :anchor "top center"
+  )
+
+  :stacking "fg" 
+  :exclusive "true" 
+
+  (bar-widget))

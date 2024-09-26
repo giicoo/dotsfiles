@@ -1,0 +1,125 @@
+@import "colors.scss";
+* {
+  all: unset; 
+  font-size: 18px;
+}
+
+// EWW____________________________
+// tooltip
+tooltip.background {
+  background-color: #1f1f1f;
+  font-size: 18;
+  border-radius: 10px;
+  border: #ffffff 1px solid;
+  color: #ffffff;
+}
+
+tooltip label {
+  margin: 6px;
+}
+
+// scale
+scale trough {
+  all: unset;
+  background-color: #22242b;
+  box-shadow: 0 2px 3px 2px #06060b;
+  border-radius: 16px;
+  min-height: 10px;
+  min-width: 70px;
+  margin: 0px 10px 0px 0px;
+}
+// _____________________________________
+
+.bar {
+  background: $bg;
+}
+
+// Hyprland
+.workspace-entry.current {
+  background: white;
+  color: $bg;
+
+}
+
+
+// Clock
+.clock {
+  padding-right: 10px;
+  padding-left: 10px;
+  border-radius: 10px;
+}
+
+
+// Bright
+.brightbar trough highlight {
+  // background-image: linear-gradient(to right, #e4c9af 30%, #f2cdcd 50%, #e0b089 100% *50);
+  background: white;
+  border-radius: 10px;
+}
+
+
+// Volume
+.volbar trough highlight {
+  // background-image: linear-gradient(to right, #afcee0 30%, #a1bdce 50%, #77a5bf 100% *50);
+  background: white;
+  border-radius: 10px;
+}
+
+
+
+
+
+
+
+
+// Calendar
+.calendar {
+  background-color: $bg;
+}
+
+calendar:selected {
+  color: $bg;
+  background-color: $font;
+  border: 1px solid $font;
+  border-radius: 25%;
+}
+
+calendar.highlight {
+  color: $bg;
+  background-color: $font;
+}
+
+calendar:indeterminate {
+  color: $grey;
+}
+
+
+
+
+.notifications {
+  min-height: 0px;
+  background-color: transparent;
+}
+
+.notif {
+  background-color: #282828;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border-width: 2;
+  border-color: #fabd2f;
+}
+
+.notif image {
+  padding-right: 10px;
+}
+
+
+
+
+
+
+
+
+
+
