@@ -1,0 +1,47 @@
+vim.g.mapleader = " "
+
+local keymap = vim.keymap -- for conciseness
+
+keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
+
+keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
+
+-- increment/decrement numbers
+keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
+keymap.set("n", "<leader>-", "<C-x>", { desc = "Decrement number" }) -- decrement
+
+-- window management
+keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" }) -- split window vertically
+keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" }) -- split window horizontally
+keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
+keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
+
+keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
+keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
+keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
+keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
+keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+
+keymap.set("n", "<leader>t", "<cmd>ToggleTerm<CR>", { desc = "Terminal" })
+keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+keymap.set('t', 'jk', [[<C-\><C-n>]], opts)
+keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+
+keymap.set("n", "<leader>1", "<cmd>BufferLineGoToBuffer 1<CR>", { desc = "Go to buffer 1" })
+keymap.set("n", "<leader>2", "<cmd>BufferLineGoToBuffer 2<CR>", { desc = "Go to buffer 1" })
+keymap.set("n", "<leader>3", "<cmd>BufferLineGoToBuffer 3<CR>", { desc = "Go to buffer 1" })
+keymap.set("n", "<leader>4", "<cmd>BufferLineGoToBuffer 4<CR>", { desc = "Go to buffer 1" })
+keymap.set("n", "<leader>5", "<cmd>BufferLineGoToBuffer 5<CR>", { desc = "Go to buffer 1" })
+keymap.set("n", "<leader>6", "<cmd>BufferLineGoToBuffer 6<CR>", { desc = "Go to buffer 1" })
+keymap.set("n", "<leader>7", "<cmd>BufferLineGoToBuffer 7<CR>", { desc = "Go to buffer 1" })
+keymap.set("n", "<leader>8", "<cmd>BufferLineGoToBuffer 8<CR>", { desc = "Go to buffer 1" })
+keymap.set("n", "<leader>9", "<cmd>BufferLineGoToBuffer 9<CR>", { desc = "Go to buffer 1" })
+keymap.set("n", "<leader>0", "<cmd>BufferLineGoToBuffer -1<CR>", { desc = "Go to buffer 1" })
+
+
+
+

@@ -22,10 +22,10 @@ configuration {
 /*****----- Global Properties -----*****/
 * {
     font:                        "JetBrainsMono Nerd Font 10";
-	background:     #000000FF;
-    background-alt: #101010FF;
+	background:     #1C282E;
+    background-alt: #1F3541;
     foreground:     #FFFFFFFF;
-    selected:       #62AEEFFF;
+    selected:       #8E9EA4;
     active:         #98C379FF;
     urgent:         #E06B74FF;
 }
@@ -60,7 +60,7 @@ mainbox {
 imagebox {
     padding:                     20px;
     background-color:            transparent;
-    background-image:            url("~/.config/rofi/images/space.jpg", height);
+    background-image:            url("~/.config/rofi/images/fog_bridge.png", height);
     orientation:                 vertical;
     children:                    [ "inputbar", "dummy", "mode-switcher" ];
 }
